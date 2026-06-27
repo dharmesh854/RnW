@@ -1,0 +1,56 @@
+PROJECT TITLE:
+Data Modeler – Building a Normalized Star Schema Data Model
+
+---
+
+DATASET OVERVIEW:
+The project uses multiple datasets divided into fact and dimension tables:
+
+1. Sales_Fact Table:
+   This is a fact table containing transactional data such as SalesID, CustomerID, ProductID, RegionID, DateKey, Quantity, Revenue, and Discount.
+
+2. Customer_Dim Table:
+   This table contains customer-related information including CustomerID, Full Name, Age, Gender, and Segment.
+
+3. Product_Dim Table:
+   This table includes product details such as ProductID, Product Name, Category, Subcategory, and Brand.
+
+4. Region_Dim Table:
+   This table provides details like RegionID, Country, State, and City.
+
+5. Date_Dim Table:
+   This table contains date attributes including DateKey, Date, Month, Quarter, Year, and Fiscal Year.
+
+6. Returns_Fact Table:
+   This table contains product return information such as ReturnID, SalesID, ReturnDateKey, and Reason for return.
+
+---
+
+RELATIONSHIPS AND CARDINALITY:
+Relationships were defined based on primary key and foreign key columns. Most relationships follow a Many-to-One (*:1) cardinality from fact tables to dimension tables. A One-to-Many (1:*) relationship exists between Sales_Fact and Returns_Fact.
+
+Cross-filter direction was primarily set to single to avoid ambiguity and maintain model efficiency.
+
+---
+
+HIERARCHIES AND DATA CATEGORIZATION:
+Hierarchies were created to improve data analysis and visualization:
+
+* Date Hierarchy: Year → Quarter → Month → Date
+* Region Hierarchy: Country → State → City
+* Product Hierarchy: Category → Subcategory → Product Name
+
+Data categories were also assigned appropriately, such as Country and City, to ensure correct sorting and visualization.
+
+---
+
+VERIFICATION AND VALIDATION:
+A Matrix visual was used to validate the data model. The following analyses were performed:
+
+* Sales analysis by Product Category and Region
+* Return reasons analysis by Fiscal Year
+* Revenue analysis by Customer Segment
+
+These validations ensured that the relationships and model design were working correctly.
+
+---

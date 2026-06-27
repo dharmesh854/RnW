@@ -1,0 +1,86 @@
+~ Project Title : Sales, Employee and HTML file Data Analysis using Power Query Editor
+
+~ Data Sources : 
+
+	- The project uses the following data sources:
+
+	- Sales data from multiple Excel files (Sales_Jan.xlsx, Sales_Feb.xlsx, Sales_Mar.xlsx)
+
+	- Employee dataset from an Excel file
+
+	- HTML table data loaded from a local HTML file
+
+~ Data Loading Process:
+
+	- Loaded Excel files using Folder Source (Append Queries) to combine monthly sales data
+
+	- Imported Employee data using Excel connector
+
+	- Extracted HTML table using Web/Page connector in Power Query
+
+~ Data Transformations Performed:
+
+1. Basic Transformations:
+
+	Removed blank rows and columns
+
+	Promoted headers
+
+	Renamed columns
+
+	Changed data types using locale settings
+
+	Removed duplicates and null values
+
+2. Text Cleaning:
+
+	Used TRIM, CLEAN, UPPER, LOWER functions
+
+	Split columns using delimiter
+
+3. Numeric Operations:
+
+	Rounded numeric values
+
+	Created calculated column:
+	Profit = Revenue – Cost
+
+4. Date & Time Processing:
+
+	Extracted Year, Month, Day, and Quarter from date columns
+
+	Created Fiscal Month column
+
+	Calculated Age from Birthdate
+
+5. Conditional Columns:
+
+	Created Sales Category:
+
+	High (≥ 10,000)
+
+	Medium (5,000–9,999)
+
+	Low (< 5,000)
+
+6. Indexing:
+
+	Added Index columns (0-based and 1-based)
+
+7. Pivot & Unpivot:
+
+	Converted data between wide and normalized formats
+
+8. Merging & Appending:
+
+	Appended monthly sales data into a single table
+
+9. Grouping & Aggregation:
+
+	Grouped data by Region
+
+	Calculated:
+
+	Total Sales
+
+	Transaction Count

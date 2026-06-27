@@ -1,0 +1,94 @@
+DAX Depo Dataset Analysis Project (Power BI)
+📌 Project Overview
+
+In this project, I worked with the DAX Depo dataset to analyze business performance using Power BI and DAX functions.
+
+🗂️ Data Model
+
+I used multiple tables such as Sales, Returns, Customers, Products, Dates, and Regions to build a proper data model.
+
+The DAX Depo dataset mainly consists of:
+
+2 Fact Tables: Sales, Returns
+4 Dimension Tables: Region, Customers, Date, Products
+
+🧮 Calculated Columns
+
+I created several calculated columns to enhance data usability:
+
+Profit: Calculated by subtracting Cost from Sales Amount in the Sales_Fact table
+Return Flag: Added to identify whether a product was returned in the Sales_Fact table
+Full Customer Name: Created by combining first and last names in the Customer_Dim table
+📈 Measures Created
+
+I developed key measures to analyze business performance:
+
+ -Total Sales
+ -Total Cost
+ -Total Profit
+ -Return Rate (% of returned items)
+ -Average Sales per Transaction
+
+⚡ Advanced Analysis (Quick Measures)
+
+I used Quick Measures to perform advanced analysis:
+
+ - Compared sales growth year-over-year (YoY)
+
+🧩 Measure Table
+
+To maintain organization, I created a separate Measure Table for all DAX calculations.
+
+🔍 Filter Context & DAX Functions
+
+I worked with filter context and data behavior using the following functions:
+
+ALL()
+FILTER()
+CALCULATE()
+
+This helped in comparing sales across regions with and without filters.
+
+🛠️ DAX Functions Used
+
+🔢 Calculations
+ - SUM()
+ - AVERAGE()
+ - MAX()
+🔍 Counting
+ - COUNTX()
+ - DISTINCTCOUNT()
+🔀 Logical Functions
+ - IF()
+ - AND()
+🔤 Text Functions
+ - CONCATENATE()
+ - UPPER()
+ - LEFT()
+ - COMBINEVALUES()
+📅 Date Functions
+ - YEAR()
+ - MONTH()
+ - EOMONTH()
+⏳ Time Intelligence Analysis
+
+I performed time-based analysis using:
+
+ - TOTALYTD() → Year-to-Date Sales
+ - SAMEPERIODLASTYEAR() → Year-over-Year Comparison
+🔗 Data Relationships
+
+I established proper relationships between all tables to ensure accurate analysis.
+
+📊 Visualizations (Report View)
+
+🧾 Matrix Visuals
+ - Sales by Region & Category
+ - Monthly Profit Analysis
+ - Customer-wise Sales
+ - Product Performance
+📌 Card Visuals
+ - Return Rate (%)
+ - Total Profit
+ - Maximum Sale
+ - Total Transactions

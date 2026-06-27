@@ -1,0 +1,159 @@
+CREATE DATABASE Data_Transformer;
+
+USE Data_Transformer;
+
+
+
+CREATE TABLE CUSTOMERS(
+CUST_ID INT PRIMARY KEY,
+FIRST_NAME VARCHAR(20) UNIQUE KEY,
+LAST_NAME VARCHAR(20) UNIQUE KEY,
+EMAIL VARCHAR(50),
+REGISTRATION_DATE DATE
+);
+
+INSERT INTO CUSTOMERS VALUES
+(1, 'John', 'Doe', 'john.doe@gmail.com', '2022-03-15'),
+(2, 'Jane', 'Smith', 'jane.smith@gmail.com', '2021-11-02'),
+(3, 'Michael', 'Brown', 'michael.brown@gmail.com', '2020-06-10'),
+(4, 'Emily', 'Davis', 'emily.davis@gmail.com', '2023-01-25'),
+(5, 'David', 'Wilson', 'david.wilson@gmail.com', '2019-09-18');
+
+
+CREATE TABLE ORDERS(
+ORDER_ID INT PRIMARY KEY,
+CUST_ID INT,
+FOREIGN KEY (CUST_ID) REFERENCES CUSTOMERS(CUST_ID),
+ORDER_DATE DATE,
+TOTAL_AMOUNT DECIMAL(10,2)
+);
+
+INSERT INTO ORDERS VALUES
+(101, 1, '2025-11-11', 150.15),
+(102, 2, '2025-10-10', 200.75),
+(103, 1, '2025-09-09', 850.00),
+(104, 3, '2025-08-08', 1200.50),
+(105, 4, '2025-07-07', 450.25),
+(106, 5, '2025-06-06', 999.99);
+
+CREATE TABLE EMPLOYEES(
+EMP_ID INT PRIMARY KEY,
+FIRST_NAME VARCHAR(20),
+LAST_NAME VARCHAR(20),
+DEPARTMENT VARCHAR(20),
+HIRE_DATE DATE,
+SALARY INT
+);
+
+INSERT INTO EMPLOYEES VALUES
+(1, 'Mark', 'Johnson', 'Sales', '2020-12-12', 50000),
+(2, 'Susan', 'Lee', 'HR', '2022-03-03', 55000),
+(3, 'Robert', 'Miller', 'IT', '2023-01-01', 67500),
+(4, 'Linda', 'Taylor', 'Finance', '2019-11-22', 77000),
+(5, 'James', 'Anderson', 'Support', '2016-07-14', 34000);
+
+
+-- 1)Inner Join
+SELECT C.* , O.* 
+FROM CUSTOMERS C 
+INNER JOIN ORDERS O 
+ON C.CUST_ID = O.CUST_ID;
+
+
+-- 2)Left Join
+SELECT C.* , O.* 
+FROM CUSTOMERS C 
+LEFT JOIN ORDERS O 
+ON C.CUST_ID = O.CUST_ID;
+
+
+-- 3)Right Join
+SELECT C.* , O.* 
+FROM CUSTOMERS C 
+RIGHT JOIN ORDERS O 
+ON C.CUST_ID = O.CUST_ID;
+
+
+-- 4)Full Outer Join
+SELECT C.* , O.* 
+FROM CUSTOMERS C 
+LEFT JOIN ORDERS O 
+ON C.CUST_ID = O.CUST_ID
+
+UNION
+
+SELECT C.* , O.* 
+FROM CUSTOMERS C 
+RIGHT JOIN ORDERS O 
+ON C.CUST_ID = O.CUST_ID;
+
+
+-- 5)Find Customers who have placed orders worth more than average amount
+SELECT * FROM CUSTOMERS WHERE CUST_ID IN (SELECT CUST_ID FROM ORDERS WHERE TOTAL_AMOUNT > (SELECT AVG(TOTAL_AMOUNT) FROM ORDERS));
+
+
+-- 6)Find employees with salaries above the average salary 
+SELECT * FROM EMPLOYEES WHERE SALARY > (SELECT AVG(SALARY) FROM EMPLOYEES);
+
+
+-- 7)Extract the year and month From the OrderDate
+SELECT ORDER_ID ,
+YEAR(ORDER_DATE) AS ORDER__YEAR,
+MONTH(ORDER_DATE) AS ORDER_MONTH
+FROM ORDERS;
+
+-- 8)Difference in days between Order_Date and current date
+SELECT ORDER_ID , DateDiff(CurDate() , ORDER_DATE) 
+AS DIFFERENCE_OF_DAYS 
+FROM ORDERS;
+
+
+-- 9)Format Order_Date (DD-MMM-YYYY)
+SELECT ORDER_ID , 
+Date_Format(ORDER_DATE , "%d-%m-%Y") AS FORMATTED_DATE 
+FROM ORDERS;
+
+-- 10)Concatenate First_Name & Last_Name
+SELECT CUST_ID , 
+Concat(FIRST_NAME , "" , LAST_NAME) AS FULLNAME 
+From CUSTOMERS;
+
+-- 11)Replace part of a string (John → Jonathan)
+SELECT REPLACE(FIRST_NAME , "John" , "Jonathan") AS REAL_NAME FROM CUSTOMERS;
+
+-- 12)First_Name uppercase & Last_Name lowercase
+SELECT Upper(FIRST_NAME) AS FIRSTNAME_UPPER , 
+Lower(LAST_NAME) AS LASTNAME_LOWER 
+FROM CUSTOMERS;
+
+-- 13)Trim extra spaces from Email
+SELECT Trim(EMAIL) As TRIMMED_EMAIL 
+FROM CUSTOMERS;
+
+-- 14)Running total of Total_Amount
+SELECT ORDER_ID , ORDER_DATE , TOTAL_AMOUNT , 
+Sum(TOTAL_AMOUNT) OVER (
+ORDER BY ORDER_DATE) AS RUNNING_TOTAL 
+FROM ORDERS;
+
+-- 15)Running total of Total_Amount
+SELECT ORDER_ID , TOTAL_AMOUNT , 
+RANK() OVER (
+ORDER BY TOTAL_AMOUNT DESC) AS AMOUNT_BANK 
+FROM ORDERS;
+
+-- 16)Assign discount based on Total_Amount
+SELECT ORDER_ID , TOTAL_AMOUNT ,
+	CASE 
+		WHEN TOTAL_AMOUNT > 1000 THEN "10% Discount"
+        WHEN TOTAL_AMOUNT > 500 THEN "5% Discount"
+        ELSE "No discount"
+END AS DISCOUNT FROM ORDERS;
+
+-- 17)Categorize employees’ salary (High / Medium / Low)
+SELECT EMP_ID , FIRST_NAME , SALARY , 
+	CASE
+		WHEN SALARY >= 55000 THEN "High"
+        WHEN SALARY >= 50000 THEN "Medium"
+        Else "Low"
+	END AS CATECORY_SALARYWISE FROM EMPLOYEES;

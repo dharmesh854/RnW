@@ -1,0 +1,153 @@
+CREATE DATABASE DATA_DIGER; 
+USE DATA_DIGER;
+
+
+-- Customers Table
+CREATE TABLE CUSTOMERS(
+CUST_ID INT PRIMARY KEY,
+NAME VARCHAR(50),
+EMAIL VARCHAR(50),
+ADDRESS VARCHAR(50)
+);
+
+INSERT INTO CUSTOMERS VALUES
+(1,"Risav","risav77@gmail.com","Junagadh,Gujarat"),
+(2,"Vrushik","raaja077@gmail.com","Udaipur,Rajasthan"),
+(3,"Hardik","hardik1814@gmail.com","Mumbai,Maharashtra"),
+(4,"Mayank","mayank1408@gmail.com","Rajkot,Gujarat"),
+(5,"Aryan","aryan30@gmail.com","Agra,Delhi");
+
+-- Retrieve all customer details
+SELECT * FROM CUSTOMERS;
+
+-- Update a customer address
+UPDATE CUSTOMERS SET ADDRESS = "Kolkata,Maharashtra" WHERE CUST_ID = 3;
+
+-- Delete a customer using their id
+DELETE FROM CUSTOMERS WHERE CUST_ID = 5;
+
+-- Display all customers whose name is Vrushik
+SELECT * FROM CUSTOMERS WHERE NAME = "Vrushik";
+
+
+
+-- Orders Table
+CREATE TABLE ORDERS(
+ORDER_ID INT PRIMARY KEY,
+CUST_ID INT,
+FOREIGN KEY (CUST_ID) REFERENCES CUSTOMERS(CUST_ID),
+ORDER_DATE DATE,
+TOTAL_AMOUNT INT
+);
+
+INSERT INTO ORDERS VALUES
+(11,1,"2025-12-26",2560),
+(12,2,"2026-01-06",12000),
+(13,3,"2025-06-03",500),
+(14,3,"2025-08-25",15630),
+(15,4,"2025-04-20",3650);
+
+-- Retieve all orders made by a specific customer
+SELECT * FROM ORDERS WHERE CUST_ID = 3;
+
+-- Update an order's total amount
+UPDATE ORDERS SET TOTAL_AMOUNT = 700 WHERE ORDER_ID = 13; 
+
+-- Delete an order using it's order id
+DELETE FROM ORDERS WHERE ORDER_ID = 12;
+
+-- Retrieve orders placed in the last 30 days
+SELECT * FROM ORDERS WHERE ORDER_DATE = "2025-12-26";
+
+-- Retrive the highest, lowest and avg order amount using aggregate functions
+SELECT MAX(TOTAL_AMOUNT) FROM ORDERS;
+SELECT MIN(TOTAL_AMOUNT) FROM ORDERS;
+SELECT AVG(TOTAL_AMOUNT) FROM ORDERS;
+
+
+
+
+-- Products Table
+CREATE TABLE PRODUCTS
+(PRODUCT_ID INT PRIMARY KEY,
+PRODUCT_NAME VARCHAR(50),
+PRICE INT,
+STOCK INT NOT null
+);
+
+INSERT INTO PRODUCTS VALUES
+(06,"Samsumg F15",18000,05),
+(18,"Oppo F15 Pro",29000,20),
+(33,"Redmi Prime 11",16000,00),
+(93,"Iphone 15 Pro",75000,11),
+(17,"Samsung M31",12000,18);
+
+
+-- Retrieve all products sorted by price in descending order
+SELECT * FROM PRODUCTS ORDER BY PRICE DESC;
+
+-- Update the price of a specific product
+UPDATE PRODUCTS SET PRICE = 70000 WHERE PRODUCT_ID = 93;
+
+-- Delete a product if it's out of stock
+DELETE FROM PRODUCTS WHERE PRODUCT_ID = 33;
+
+-- Retrieve products whose price is between 500 and 2000
+SELECT * FROM PRODUCTS WHERE PRICE BETWEEN 10000 AND 20000;
+
+-- Retrieve the most expensive and cheap product 
+SELECT MIN(PRICE) FROM PRODUCTS;
+
+
+
+
+
+
+
+
+
+-- Order Details Table
+CREATE TABLE ORDER_DETAILS(
+DETAILS_ID INT PRIMARY KEY,
+ORDER_ID INT NOT NULL,
+FOREIGN KEY (ORDER_ID) REFERENCES ORDERS(ORDER_ID),
+PRODUCT_ID INT NOT NULL,
+FOREIGN KEY (PRODUCT_ID) REFERENCES PRODUCTS(PRODUCT_ID),
+QUANTITY INT NOT NULL,
+SUB_TOTAL DECIMAL(10,2)
+);
+
+INSERT ORDER_DETAILS VALUES
+(100,26,3,1,10500),
+(101,27,2,2,70500),
+(102,25,4,1,67500),
+(103,25,4,3,40500),
+(104,28,2,1,30500);
+
+-- Retrieve all order details for a specifc order
+SELECT * FROM ORDER_DETAILS WHERE ORDER_ID = 26;
+
+-- Calculate the total revenue generated from all orders using SUM()
+SELECT ORDER_ID , SUM(SUB_TOTAL) AS TOTAL_AMOUNT 
+FROM ORDER_DETAILS 
+WHERE ORDER_ID = 27 GROUP BY ORDER_ID;
+
+-- Retrieve the top 3 most ordered products
+SELECT PRODUCT_ID , SUM(QUANTITY) AS TOTAL_QUANTITY 
+FROM ORDER_DETAILS 
+GROUP BY PRODUCT_ID 
+ORDER BY TOTAL_QUANTITY DESC LIMIT 3;
+
+-- Count how many times A specific product has been sold using COUNT()
+SELECT PRODUCT_ID , COUNT(*) AS TIMESOLD FROM ORDER_DETAILS WHERE PRODUCT_ID = 2 GROUP BY PRODUCT_ID;
+SELECT PRODUCT_ID , COUNT(*) AS TIMESOLD FROM ORDER_DETAILS WHERE PRODUCT_ID = 3 GROUP BY PRODUCT_ID;
+SELECT PRODUCT_ID , COUNT(*) AS TIMESOLD FROM ORDER_DETAILS WHERE PRODUCT_ID = 4 GROUP BY PRODUCT_ID;
+SELECT PRODUCT_ID , COUNT(*) AS TIMESOLD FROM ORDER_DETAILS WHERE ProPRODUCT_ID_ID = 5 GROUP BY PRODUCT_ID;
+
+
+
+
+
+
+
+
